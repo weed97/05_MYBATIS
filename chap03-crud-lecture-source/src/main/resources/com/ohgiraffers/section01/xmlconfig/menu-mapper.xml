@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MenuMapper">
+
+<!-- resultMap : 조회한 컬럼과 DTO를 매핑시키기 위한 설정 -->
+    <resultMap id="menuResultMap" type="com.ohgiraffers.section01.xmlconfig.MenuDTO">
+        <id property="code" column="menu_code"/>
+        <result property="name" column="menu_name"/>
+        <result property="price" column="menu_price"/>
+        <result property="categoryCode" column="category_code"/>
+        <result property="orderableStatus" column="orderable_status"/>
+    </resultMap>
+
+    <select id="selectAllMenu" resultMap="menuResultMap">
+        select menu_code,
+        menu_name,
+        menu_price,
+        category_code,
+        orderable_status
+        from tbl_menu
+        where orderable_status = 'Y'
+        order by menu_code
+    </select>
+
+<!--  파라미터가 한 개인 경우 바인딩 되는 이름은 상관 없으며 파라미터 타입은 지정하지 않아도 된다.
+      - resultMap : 위에서 생성한 resultMap을 리턴 타입으로 이용하는 경우
+      - resultType : 이미 정의되어 있는 타입을 이용하여 리턴 타입으로 이용하는 경우
+      - parameterType : 매개변수로 받을 타입을 지정한다. 기본형은 앞에 _를 붙여주는것이 관례
+        -->
+    <select id="selectMenuByCode" parameterType="_int" resultMap="menuResultMap">
+        select menu_code,
+        menu_name,
+        menu_price,
+        category_code,
+        orderable_status
+        from tbl_menu
+        where menu_code = #{ code }
+    </select>
+
+
+<!--  insert, update, delete resultType은 작성하지 않고, 기본 _int 수행 결과를 반환한다.-->
+<!--  파라미터로 전달된 DTO의 필드명으로 값을 바인딩 해야 하며, getter를 이용하므로 getter가 없으면 에러발생-->
+    <insert id="insertMenu" parameterType="com.ohgiraffers.section01.xmlconfig.MenuDTO">
+        insert into tbl_menu (
+        menu_name,
+        menu_price,
+        category_code,
+        orderable_status
+        ) values (
+        #{ name },
+        #{ price },
+        #{ categoryCode },
+        'Y'
+        )
+    </insert>
+
+    <update id="updateMenu" parameterType="com.ohgiraffers.section01.xmlconfig.MenuDTO">
+        update tbl_menu
+        set
+        menu_name = #{ name },
+        menu_price = #{ price },
+        category_code = #{ categoryCode }
+        where
+        menu_code = #{ code }
+    </update>
+
+    <delete id="deleteMenu" parameterType="_int">
+        delete
+        from tbl_menu
+        where menu_code = #{ code }
+    </delete>
+</mapper>
