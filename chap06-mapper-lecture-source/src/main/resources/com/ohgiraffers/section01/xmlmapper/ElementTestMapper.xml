@@ -109,19 +109,31 @@
     <!-- association
          a. 따로 만든 resultMap을 사용하는 방법 -->
 
-    <resultMap id="menuAndCategoryResultMap" type="com.ohgiraffers.common.MenuAndCategoryDTO">
-        <id property="code" column="menu_code"/>
-        <result property="name" column="menu_name"/>
-        <result property="price" column="menu_price"/>
-        <result property="orderableStatus" column="orderable_status"/>
-        <association property="category" resultMap="categoryResultMap"/>
-    </resultMap>
+<!--    <resultMap id="menuAndCategoryResultMap" type="com.ohgiraffers.common.MenuAndCategoryDTO">-->
+<!--        <id property="code" column="menu_code"/>-->
+<!--        <result property="name" column="menu_name"/>-->
+<!--        <result property="price" column="menu_price"/>-->
+<!--        <result property="orderableStatus" column="orderable_status"/>-->
+<!--        <association property="category" resultMap="categoryResultMap"/>-->
+<!--    </resultMap>-->
 
-    <resultMap id="categoryResultMap" type="com.ohgiraffers.common.CategoryDTO">
-        <id property="code" column="category_code"/>
-        <result property="name" column="category_name"/>
-        <result property="refCategoryCode" column="ref_category_code"/>
-    </resultMap>
+<!--    <resultMap id="categoryResultMap" type="com.ohgiraffers.common.CategoryDTO">-->
+<!--        <id property="code" column="category_code"/>-->
+<!--        <result property="name" column="category_name"/>-->
+<!--        <result property="refCategoryCode" column="ref_category_code"/>-->
+<!--    </resultMap>-->
+
+        <resultMap id="menuAndCategoryResultMap" type="com.ohgiraffers.common.MenuAndCategoryDTO">
+            <id property="code" column="menu_code"/>
+            <result property="name" column="menu_name"/>
+            <result property="price" column="menu_price"/>
+            <result property="orderableStatus" column="orderable_status"/>
+            <association property="category" javaType="com.ohgiraffers.common.CategoryDTO">
+                <id property="code" column="category_code"/>
+                <result property="name" column="category_name"/>
+                <result property="refCategoryCode" column="ref_category_code"/>
+            </association>
+        </resultMap>
 
 
     <select id="selectResultMapAssociationTest" resultMap="menuAndCategoryResultMap">
@@ -140,19 +152,33 @@
 
     <!-- collection
             a. 따로 만든 resultMap을 사용하는 방법-->
+    <!--    <resultMap id="categoryAndMenuResultMap" type="com.ohgiraffers.common.CategoryAndMenuDTO">-->
+    <!--        <id property="code" column="category_code"/>-->
+    <!--        <result property="name" column="category_name"/>-->
+    <!--        <result property="refCategoryCode" column="ref_category_code"/>-->
+    <!--        <collection property="menuList" resultMap="menuResultMap"/>-->
+    <!--    </resultMap>-->
+
+    <!--    <resultMap id="menuResultMap" type="com.ohgiraffers.common.MenuDTO">-->
+    <!--        <id property="code" column="menu_code"/>-->
+    <!--        <result property="name" column="menu_name"/>-->
+    <!--        <result property="price" column="menu_price"/>-->
+    <!--        <result property="categoryCode" column="category_code"/>-->
+    <!--        <result property="orderableStatus" column="orderable_status"/>-->
+    <!--    </resultMap>-->
+
+    <!-- b. collection 내에 id, result를 작성하는 방법-->
     <resultMap id="categoryAndMenuResultMap" type="com.ohgiraffers.common.CategoryAndMenuDTO">
         <id property="code" column="category_code"/>
         <result property="name" column="category_name"/>
         <result property="refCategoryCode" column="ref_category_code"/>
-        <collection property="menuList" resultMap="menuResultMap"/>
-    </resultMap>
-
-    <resultMap id="menuResultMap" type="com.ohgiraffers.common.MenuDTO">
-        <id property="code" column="menu_code"/>
-        <result property="name" column="menu_name"/>
-        <result property="price" column="menu_price"/>
-        <result property="categoryCode" column="category_code"/>
-        <result property="orderableStatus" column="orderable_status"/>
+        <collection property="menuList" ofType="com.ohgiraffers.common.MenuDTO">
+            <id property="code" column="menu_code"/>
+            <result property="name" column="menu_name"/>
+            <result property="price" column="menu_price"/>
+            <result property="categoryCode" column="category_code"/>
+            <result property="orderableStatus" column="orderable_status"/>
+        </collection>
     </resultMap>
 
     <select id="selectResultMapCollectionTest" resultMap="categoryAndMenuResultMap">
