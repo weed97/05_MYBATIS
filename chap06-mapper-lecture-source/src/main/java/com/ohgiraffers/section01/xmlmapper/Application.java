@@ -22,7 +22,7 @@ public class Application {
                 case 1:
                     elementTestService.selectCacheTest(); break;
                 case 2: resultMapSubMenu(); break;
-                case 3: break;
+                case 3: elementTestService.selectSqlTest(); break;
                 case 4: break;
             }
         } while (true);
